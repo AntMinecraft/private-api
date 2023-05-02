@@ -1,0 +1,19 @@
+version: "3.1"
+services:
+    mongo:
+        image: mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: root
+        volumes:
+            - ./data:/data/db
+    ant-private-api:
+        image: ant/ant-private-api:latest
+        restart: always
+        ports:
+            - 8080:8080
+        environment:
+            - JAVA_OPTS=-Dspring.config.location=classpath:application.properties,file:/secrets.properties
+        volumes:
+            - ${SECRETS_PATH}:/secrets.properties
